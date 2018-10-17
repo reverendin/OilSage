@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import vin
+import backend
 
 
 def search_vin():
@@ -19,11 +20,17 @@ def search_vin():
       messagebox.showerror("Error","That vin does not exist, Please Try Again", parent=vin_win)
     else:
       car_details = vin.get_vin(search_entry.get())
-      print(car_details)
+      make = car_details[0].lower().capitalize()
+      model = car_details[1]
+      year = car_details[2]
+      cylinders = car_details[3]
+      engSize = car_details[4]
       vin_win.destroy()
-      display_info(car_details)
+      oil_details = backend.search_vehicle(year, make, model, cylinders, engSize)
+      display_info(car_details, oil_details)
 
-  def display_info(car_details):
+
+  def display_info(car_details, oil_details):
     info_display=Tk()
     info_display.wm_title('Car Info')
     info_display.wm_attributes('-topmost', 1)
@@ -36,20 +43,20 @@ def search_vin():
     info_display.grid_columnconfigure(6, weight=1)
     info_display.grid_rowconfigure(0, weight=1)
     info_display.grid_rowconfigure(3, weight=1)
-    info_display.grid_rowconfigure(6, weight=1)
+    info_display.grid_rowconfigure(7, weight=1)
     year_label = Label(info_display, text = f'Year : {car_details[2]}', font=('Helvetica',16)).grid(row=1, column=1)
-    make_label = Label(info_display, text = f'Make : {car_details[0]}', font=('Helvetica',16)).grid(row=1, column=3)
+    make_label = Label(info_display, text = f'Make : {car_details[0]}', font=('Helvetica',16)).grid(row=1, column=3, pady=20)
     model_label = Label(info_display, text = f'Model : {car_details[1]}', font=('Helvetica',16)).grid(row=1, column =5)
     cylinder_label = Label(info_display, text = f'Engine : V{car_details[3]}', font=('Helvetica',16)).grid(row=2, column = 2)
     disp_label = Label(info_display, text = f'Engine Size : {str(car_details[4])}', font=('Helvetica',16)).grid(row=2, column = 4)
-    weight_label = Label(info_display, text = 'Oil Weight : 0w20  ', font=('Helvetica',16)).grid(row=4, column=1)
-    type_label = Label(info_display, text = 'Oil Type : synthetic  ', font=('Helvetica',16)).grid(row=4, column=2)
-    quantity_label = Label(info_display, text = 'Oil Quantity : 4.5q  ', font=('Helvetica',16)).grid(row=4, column=3)
-    plug_label = Label(info_display, text='Plug Torque : ', font=('Helvetica',16)).grid(row=4, column=4)
-    ofilter_label = Label(info_display, text='Oil Filter : ',font=('Helvetica',16)).grid(row=4, column=5)
-    afilter_label = Label(info_display, text='Air Filter : ',font=('Helvetica',16)).grid(row=5, column=2)
-    cafilter_label = Label(info_display, text='Cabin Filter : ',font=('Helvetica',16)).grid(row=5, column=4)
-    ok_button = Button(info_display, text='OK', font=('Helvetica',16), command=info_display.destroy).grid(row=6, column = 3)
+    weight_label = Label(info_display, text = f'Oil Weight : {oil_details[5]}  ', font=('Helvetica',16)).grid(row=4, column=1)
+    type_label = Label(info_display, text = f'Oil Type : {oil_details[6]}  ', font=('Helvetica',16)).grid(row=4, column=3)
+    quantity_label = Label(info_display, text = f'Oil Quantity : {oil_details[7]}  ', font=('Helvetica',16)).grid(row=4, column=5)
+    plug_label = Label(info_display, text=f'Plug Torque : {oil_details[8]}', font=('Helvetica',16)).grid(row=5, column=2, pady=20)
+    ofilter_label = Label(info_display, text=f'Oil Filter : {oil_details[9]} ',font=('Helvetica',16)).grid(row=5, column=4)
+    afilter_label = Label(info_display, text=f'Air Filter : {oil_details[10]} ',font=('Helvetica',16)).grid(row=6, column=2)
+    cafilter_label = Label(info_display, text=f'Cabin Filter : {oil_details[11]} ',font=('Helvetica',16)).grid(row=6, column=4)
+    ok_button = Button(info_display, text='OK', font=('Helvetica',16), command=info_display.destroy).grid(row=7, column = 3)
 
 
   vin_win.grid_columnconfigure(0, weight=1)
@@ -62,7 +69,7 @@ def search_vin():
   cancel_button = Button(vin_win, text='Cancel', font=('Helvetica', 16), command=vin_win.destroy).grid(row=2,column = 1, pady=(0, 20), padx=(80,0))
   ok_button = Button(vin_win, text='OK', font = ('Helvetica', 16), command=vin_ok).grid(row=2,column=2, pady=(0,20))
 
-window=Tk()
+
 
 window.wm_title("Oil Sage")
 #window.overrideredirect(True)
