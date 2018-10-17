@@ -69,7 +69,20 @@ def search_vin():
   cancel_button = Button(vin_win, text='Cancel', font=('Helvetica', 16), command=vin_win.destroy).grid(row=2,column = 1, pady=(0, 20), padx=(80,0))
   ok_button = Button(vin_win, text='OK', font = ('Helvetica', 16), command=vin_ok).grid(row=2,column=2, pady=(0,20))
 
+def search_mm():
+  mm_win=Tk()
+  mm_win.wm_title('Search by Make and Model')
+  mm_win.wm_attributes('-topmost', 1)
+  mm.focus()
+  w=str(mm.winfo_screenwidth()//4)
+  h=str(mm.winfo_screenheight()//3)
+  mm.geometry(f'800x200+{w}+{h}')
+  mm_win.grid_columnconfigure(0, weight=1)
+  mm_win.grid_columnconfigure(6, weight=1)
+  year_label = Label(mm_win, text="Year",font=('Helvetica',16)).grid(row=1, 1)
 
+
+window=Tk()
 
 window.wm_title("Oil Sage")
 #window.overrideredirect(True)
