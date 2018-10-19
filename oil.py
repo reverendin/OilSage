@@ -3,6 +3,33 @@ from tkinter import messagebox
 import vin
 import backend
 
+def display_info(car_details, oil_details):
+  info_display=Tk()
+  info_display.wm_title('Car Info')
+  info_display.wm_attributes('-topmost', 1)
+  info_display.focus()
+  w=str(info_display.winfo_screenwidth()//4*3)
+  h=str(info_display.winfo_screenheight()//2)
+    #info_display.geometry(f'{w}x{h}')
+  info_display.attributes('-zoomed', True)
+  info_display.grid_columnconfigure(0, weight=1)
+  info_display.grid_columnconfigure(6, weight=1)
+  info_display.grid_rowconfigure(0, weight=1)
+  info_display.grid_rowconfigure(3, weight=1)
+  info_display.grid_rowconfigure(7, weight=1)
+  year_label = Label(info_display, text = f'Year : {car_details[2]}', font=('Helvetica',16)).grid(row=1, column=1)
+  make_label = Label(info_display, text = f'Make : {car_details[0]}', font=('Helvetica',16)).grid(row=1, column=3, pady=20)
+  model_label = Label(info_display, text = f'Model : {car_details[1]}', font=('Helvetica',16)).grid(row=1, column =5)
+  cylinder_label = Label(info_display, text = f'Engine : V{car_details[3]}', font=('Helvetica',16)).grid(row=2, column = 2)
+  disp_label = Label(info_display, text = f'Engine Size : {str(car_details[4])}', font=('Helvetica',16)).grid(row=2, column = 4)
+  weight_label = Label(info_display, text = f'Oil Weight : {oil_details[5]}  ', font=('Helvetica',16)).grid(row=4, column=1)
+  type_label = Label(info_display, text = f'Oil Type : {oil_details[6]}  ', font=('Helvetica',16)).grid(row=4, column=3)
+  quantity_label = Label(info_display, text = f'Oil Quantity : {oil_details[7]}  ', font=('Helvetica',16)).grid(row=4, column=5)
+  plug_label = Label(info_display, text=f'Plug Torque : {oil_details[8]}', font=('Helvetica',16)).grid(row=5, column=2, pady=20)
+  ofilter_label = Label(info_display, text=f'Oil Filter : {oil_details[9]} ',font=('Helvetica',16)).grid(row=5, column=4)
+  afilter_label = Label(info_display, text=f'Air Filter : {oil_details[10]} ',font=('Helvetica',16)).grid(row=6, column=2)
+  cafilter_label = Label(info_display, text=f'Cabin Filter : {oil_details[11]} ',font=('Helvetica',16)).grid(row=6, column=4)
+  ok_button = Button(info_display, text='OK', font=('Helvetica',16), command=info_display.destroy).grid(row=7, column = 3)
 
 def search_vin():
   vin_win=Tk()
@@ -27,36 +54,9 @@ def search_vin():
       engSize = car_details[4]
       vin_win.destroy()
       oil_details = backend.search_vehicle(year, make, model, cylinders, engSize)
+      if oil_details == None:
+        oil_details = [0,0,0,0,0,0,0,0,0,0,0,0,0]
       display_info(car_details, oil_details)
-
-
-  def display_info(car_details, oil_details):
-    info_display=Tk()
-    info_display.wm_title('Car Info')
-    info_display.wm_attributes('-topmost', 1)
-    info_display.focus()
-    w=str(info_display.winfo_screenwidth()//4*3)
-    h=str(info_display.winfo_screenheight()//2)
-    #info_display.geometry(f'{w}x{h}')
-    info_display.attributes('-zoomed', True)
-    info_display.grid_columnconfigure(0, weight=1)
-    info_display.grid_columnconfigure(6, weight=1)
-    info_display.grid_rowconfigure(0, weight=1)
-    info_display.grid_rowconfigure(3, weight=1)
-    info_display.grid_rowconfigure(7, weight=1)
-    year_label = Label(info_display, text = f'Year : {car_details[2]}', font=('Helvetica',16)).grid(row=1, column=1)
-    make_label = Label(info_display, text = f'Make : {car_details[0]}', font=('Helvetica',16)).grid(row=1, column=3, pady=20)
-    model_label = Label(info_display, text = f'Model : {car_details[1]}', font=('Helvetica',16)).grid(row=1, column =5)
-    cylinder_label = Label(info_display, text = f'Engine : V{car_details[3]}', font=('Helvetica',16)).grid(row=2, column = 2)
-    disp_label = Label(info_display, text = f'Engine Size : {str(car_details[4])}', font=('Helvetica',16)).grid(row=2, column = 4)
-    weight_label = Label(info_display, text = f'Oil Weight : {oil_details[5]}  ', font=('Helvetica',16)).grid(row=4, column=1)
-    type_label = Label(info_display, text = f'Oil Type : {oil_details[6]}  ', font=('Helvetica',16)).grid(row=4, column=3)
-    quantity_label = Label(info_display, text = f'Oil Quantity : {oil_details[7]}  ', font=('Helvetica',16)).grid(row=4, column=5)
-    plug_label = Label(info_display, text=f'Plug Torque : {oil_details[8]}', font=('Helvetica',16)).grid(row=5, column=2, pady=20)
-    ofilter_label = Label(info_display, text=f'Oil Filter : {oil_details[9]} ',font=('Helvetica',16)).grid(row=5, column=4)
-    afilter_label = Label(info_display, text=f'Air Filter : {oil_details[10]} ',font=('Helvetica',16)).grid(row=6, column=2)
-    cafilter_label = Label(info_display, text=f'Cabin Filter : {oil_details[11]} ',font=('Helvetica',16)).grid(row=6, column=4)
-    ok_button = Button(info_display, text='OK', font=('Helvetica',16), command=info_display.destroy).grid(row=7, column = 3)
 
 
   vin_win.grid_columnconfigure(0, weight=1)
@@ -73,13 +73,40 @@ def search_mm():
   mm_win=Tk()
   mm_win.wm_title('Search by Make and Model')
   mm_win.wm_attributes('-topmost', 1)
-  mm.focus()
-  w=str(mm.winfo_screenwidth()//4)
-  h=str(mm.winfo_screenheight()//3)
-  mm.geometry(f'800x200+{w}+{h}')
+  mm_win.focus()
+  w=str(mm_win.winfo_screenwidth()//4)
+  h=str(mm_win.winfo_screenheight()//3)
+  mm_win.geometry(f'{mm_win.winfo_screenwidth()}x200+{w}+{h}')
   mm_win.grid_columnconfigure(0, weight=1)
-  mm_win.grid_columnconfigure(6, weight=1)
-  year_label = Label(mm_win, text="Year",font=('Helvetica',16)).grid(row=1, 1)
+  mm_win.grid_columnconfigure(7, weight=1)
+
+  def search_ok():
+    car_details=[make_entry.get(), model_entry.get(), year_entry.get(), cylinders_entry.get(), engSize_entry.get()]
+    oil_details = backend.search_vehicle(car_details[2], car_details[0], car_details[1], car_details[3], car_details[4])
+    mm_win.destroy()
+    if oil_details == None:
+      oil_details = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+    display_info(car_details, oil_details)
+
+  title_label = Label(mm_win, text="Search by Make/Model", font=('Helvetica',16)).grid(row=0, column=3, columnspan=3, pady=10)
+  year_label = Label(mm_win, text="Year:",font=('Helvetica',16)).grid(row=1, column=1)
+  year_entry = Entry(mm_win, font=('Helvetica', 16))
+  year_entry.grid(row=1, column=2)
+  make_label = Label(mm_win, text="Make:", font=('Helvetica',16)).grid(row=1, column=3, pady=10)
+  make_entry = Entry(mm_win, font=('Helvetica', 16))
+  make_entry.grid(row=1, column=4, padx=(0,10))
+  model_label = Label(mm_win, text='Model:', font=('Helvetica',16)).grid(row=1, column= 5)
+  model_entry = Entry(mm_win, font=('Helvetica',16))
+  model_entry.grid(row=1, column=6)
+  cylinders_label = Label(mm_win, text='Cylinders:', font=('Helvetica',16)).grid(row=2, column=1, pady=10)
+  cylinders_entry = Entry(mm_win, font=('Helvetica',16))
+  cylinders_entry.grid(row=2, column=2)
+  engSize_label = Label(mm_win, text="Engine Size:", font=('Helvetica',16)).grid(row=2, column=3, padx=5)
+  engSize_entry = Entry(mm_win, font=('Helvetica',16))
+  engSize_entry.grid(row=2, column=4)
+  cancel_button = Button(mm_win, text='Cancel', font=('Helvetica', 16), command=mm_win.destroy).grid(row=3,column = 3, pady=10)
+  ok_button = Button(mm_win, text='OK', font=('Helvetica',16), command=search_ok).grid(row=3,column=4)
+
 
 
 window=Tk()
@@ -101,7 +128,7 @@ l1=Label(window,text='Search Method', pady=40, font=('Helvetica', 32))
 l1.grid(row=1, column=2)
 b1=Button(window, text="Vin", height=1, width=8, font=('Helvetica', 16), command=search_vin)
 b1.grid(row=2, column= 1)
-b2=Button(window, text='Make/Model', font=('Helvetica', 16))
+b2=Button(window, text='Make/Model', font=('Helvetica', 16), command=search_mm)
 b2.grid(row=2, column=3)
 
 window.mainloop()
