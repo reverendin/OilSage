@@ -22,6 +22,9 @@ def get_vin(vin_num):
       model = car['Model']
       year = car['ModelYear']
       cylinders = car['EngineCylinders']
-      displacement = round(float(test['Results'][0]['DisplacementL']), 1)
+      if test['Results'][0]['DisplacementL'] != "":
+        displacement = round(float(test['Results'][0]['DisplacementL']), 1)
+      else:
+        displacement = 0.1
       return(make, model, year, cylinders, displacement)
       answer = True
