@@ -22,4 +22,6 @@ def search_vehicle(year, make, model, cylinders, engSize):
   sql = f"select * FROM vehicles WHERE year ='{year}' AND make = '{make}' AND model = '{model}' AND cylinders = '{cylinders}' AND engSize = '{engSize}'"
   cur.execute(sql)
   results = cur.fetchall()
-  return results[0]
+  if results != []:
+    return results[0]
+
