@@ -1,6 +1,7 @@
 import mysql.connector
 import db_config as cfg
 
+
 mydb = mysql.connector.connect(
   host=cfg.mysql['host'],
   user=cfg.mysql['user'],
