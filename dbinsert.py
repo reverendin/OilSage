@@ -12,6 +12,38 @@ mydb = mysql.connector.connect(
 
 cur =mydb.cursor()
 
+def db_addnew():
+  year = year_entry.get()
+  make = make_entry.get()
+  model = model_entry.get()
+  cylinders = cyl_entry.get()
+  engSize= engSize_entry.get()
+  weight = weight_entry.get()
+  oiltype = type_entry.get()
+  quantity = quantity_entry.get()
+  torque = torque_entry.get()
+  ofilter = ofilter_entry.get()
+  afilter = afilter_entry.get()
+  cafilter = cafilter_entry.get()
+  val = (year,make,model,cylinders,engSize,weight,oiltype, quantity,torque,ofilter,afilter,cafilter)
+  sql = f"INSERT INTO vehicles (year, make, model, cylinders, engSize, weight, oilType, quantity, torque, ofilter, afilter, cafilter) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+  cur.execute(sql,val)
+  mydb.commit()
+
+  year_entry.delete(0, END)
+  make_entry.delete(0, END)
+  model_entry.delete(0, END)
+  cyl_entry.delete(0, END)
+  engSize_entry.delete(0, END)
+  weight_entry.delete(0, END)
+  type_entry.delete(0, END)
+  quantity_entry.delete(0, END)
+  torque_entry.delete(0, END)
+  ofilter_entry.delete(0, END)
+  afilter_entry.delete(0, END)
+  cafilter_entry.delete(0, END)
+
+
 window = Tk()
 
 window.wm_title("Data Entry")
@@ -66,6 +98,6 @@ cafilter_entry = Entry(window)
 cafilter_entry.grid(row=12, column=2, padx=10)
 
 #cancel_button = Button(window, text = 'Cancel', command=window.destroy).grid(row=13, column=1)
-ok_button = Button(window, text = 'OK').grid(row=13, column=2)
+ok_button = Button(window, text = 'OK', command=db_addnew).grid(row=13, column=2)
 
 window.mainloop()
